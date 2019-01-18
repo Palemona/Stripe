@@ -1,11 +1,12 @@
 package com.example.stripe2;
 
+import android.os.RecoverySystem;
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 
+import com.stripe.android.CustomerSession;
 import com.stripe.android.EphemeralKeyProvider;
 import com.stripe.android.EphemeralKeyUpdateListener;
-import com.stripe.example.module.RetrofitFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,6 +24,16 @@ import rx.subscriptions.CompositeSubscription;
  * ephemeral keys on the backend.
  */
 public class EKP implements EphemeralKeyProvider {
+    private @NonNull CompositeSubscription mCompositeSubscription;
+    private @NonNull StripeService mStripeService;
+    private @NonNull ProgressListener mProgressListener;
+
+    public EKP(@NonNull ProgressListener progressListener) {
+        //Retrofit retrofit = RetrofitFactory.getInstance();
+        //mStripeService = retrofit.create(StripeService.class);
+        mCompositeSubscription = new CompositeSubscription();
+        mProgressListener = progressListener;
+    }
 
     // Using RxJava for handling asynchronous responses
     @Override
@@ -52,5 +63,23 @@ public class EKP implements EphemeralKeyProvider {
                                 mProgressListener.onStringResponse(throwable.getMessage());
                             }
                         }));
+
+        CustomerSession.initCustomerSession(new EKP(new EKP.ProgressListener() {
+            @Override
+            public void onStringResponse(String string) {
+                if (string.startsWith("Error: ")) {
+                    // Show the error to the user.
+                }
+            }
+        }));
     }
+
+    public interface ProgressListener {
+        void onStringResponse(String string);
+    }
+
+
+
+
+
 }
