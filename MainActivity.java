@@ -48,7 +48,7 @@ import java.util.Map;
 import static java.security.AccessController.getContext;
 
 
-public abstract class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity  {
     //private static String url= "https://www.yaquedo.com.mx/PHPDocuments/stripetest.php";
     Button button;
     Card cardToSave;
@@ -79,7 +79,7 @@ public abstract class MainActivity extends AppCompatActivity  {
         // It's fine if the savedInstanceState is null.
         //mPaymentSession.init(mPaymentSessionListener, mPaymentSessionConfig, savedInstanceState);
 
-        super.onCreate(savedInstanceState);
+        //super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CardInputWidget mCardInputWidget = (CardInputWidget) findViewById(R.id.card_input_widget);
         button = (Button) findViewById(R.id.button);
